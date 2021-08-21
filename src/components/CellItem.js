@@ -10,7 +10,7 @@ import { getColNumber } from '../utils';
 import PropTypes from 'prop-types';
 
 const CellItem = (props) => {
-    const { dispatch, data = '', rowId, colId } = props;
+    const { dispatch, data = '', rowId, colId, selectedCell } = props;
     const [value, setValue] = useState(data);
 
     useEffect(() => {
@@ -72,8 +72,15 @@ const CellItem = (props) => {
         setValue(insertedValue);
     };
 
+    let activeClass = '';
+    if (selectedCell.length === 2) {
+        const [selectedRowId, selectedColId] = selectedCell;
+        if (selectedRowId === rowId && selectedColId === colId) {
+            activeClass = 'selected';
+        }
+    }
     return (
-        <td className="cellItem-container">
+        <td className={`cellItem-container ${activeClass}`}>
             <input
                 value={value}
                 className="cellItem-input"
@@ -88,6 +95,7 @@ CellItem.propTypes = {
     data: PropTypes.number.isRequired,
     rowId: PropTypes.number.isRequired,
     colId: PropTypes.number.isRequired,
+    selectedCell: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default CellItem;

@@ -5,7 +5,7 @@ import Menu from './Menu';
 import { rowMenu, optionToActionMap } from '../config';
 
 const GenerateBody = (props) => {
-    const { data, colCount, dispatch } = props;
+    const { data, colCount, dispatch, selectedCell } = props;
     const numberOfRows = data.length;
 
     const handleMenuClick = (menuId, optionId) => {
@@ -29,6 +29,7 @@ const GenerateBody = (props) => {
                     rowId={rowId}
                     colId={colId}
                     dispatch={dispatch}
+                    selectedCell={selectedCell}
                 />
             );
         });

@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import GenerateHeader from './components/GenerateHeader';
 import GenerateBody from './components/GenerateBody';
+import SearchBox from './components/SearchBox';
 import { NUM_ROWS, NUM_COLS, ACTION_TYPES } from './config';
 import {
     createMatrix,
@@ -25,8 +26,12 @@ const reducer = (state, action) => {
             const { colId, optionId } = action.payload;
             const { matrix } = state;
             const updatedMatrix = matrix.sort((a, b) => {
-                const aValue = a[colId - 1];
-                const bValue = b[colId - 1];
+                let aValue = a[colId - 1];
+                let bValue = b[colId - 1];
+
+                aValue = isNaN(aValue) ? aValue : parseFloat(aValue);
+                bValue = isNaN(bValue) ? bValue : parseFloat(bValue);
+
                 if (aValue === undefined || bValue === undefined) {
                     return 0;
                 }
@@ -153,6 +158,22 @@ const reducer = (state, action) => {
                 console.error('Out of range');
             }
         }
+        case ACTION_TYPES.SEARCH: {
+            const { query } = action.payload;
+            const { matrix } = state;
+            let location = [];
+
+            for (let i = 0; i < matrix.length; i++) {
+                const colLength = matrix[i].length;
+                for (let j = 0; j < colLength; j++) {
+                    if (query === matrix[i][j]) {
+                        location = [i, j];
+                    }
+                }
+            }
+            //highlight section
+            return { ...state, selectedCell: location };
+        }
         default:
             return state;
     }
@@ -164,25 +185,38 @@ const App = () => {
         rowCount: NUM_ROWS,
         colCount: NUM_COLS,
         matrix: initialMatrix,
+        selectedCell: [],
     };
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const { colCount, matrix } = state;
+    const handleMouseDown = () => {
+        console.log('handleMouseDown called ', rowId, colId);
+    };
+
+    const { colCount, matrix,selectedCell } = state;
     return (
-        <table className="content-table">
-            <thead>
-                <tr>
-                    <GenerateHeader colCount={colCount} dispatch={dispatch} />
-                </tr>
-            </thead>
-            <tbody>
-                <GenerateBody
-                    data={matrix}
-                    colCount={colCount}
-                    dispatch={dispatch}
-                />
-            </tbody>
-        </table>
+        <>
+            <SearchBox dispatch={dispatch} />
+            <table className="content-table">
+                <thead>
+                    <tr>
+                        <GenerateHeader
+                            colCount={colCount}
+                            dispatch={dispatch}
+                            onMouseDown={handleMouseDown}
+                        />
+                    </tr>
+                </thead>
+                <tbody>
+                    <GenerateBody
+                        data={matrix}
+                        colCount={colCount}
+                        dispatch={dispatch}
+                        selectedCell={selectedCell}
+                    />
+                </tbody>
+            </table>
+        </>
     );
 };
 

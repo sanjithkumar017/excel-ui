@@ -71,7 +71,8 @@
     padding: 0;
 }
 
-/*.content-table th {
+/*
+.content-table th {
     background-color: #009879;
     position: sticky;
     top: 0;
@@ -88,4 +89,12 @@
 
 .content-table tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
+}
+
+.szh-menu {
+    z-index: 1;
+}
+
+.cellItem-container.selected {
+    border: 2px solid #009879;
 }

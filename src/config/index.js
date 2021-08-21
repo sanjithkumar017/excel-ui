@@ -1,5 +1,5 @@
-export const NUM_ROWS = 50;
-export const NUM_COLS = 50;
+export const NUM_ROWS = 20;
+export const NUM_COLS = 20;
 
 const charNumArr = Array.from(new Array(26).fill(0)).map(
     (ignore, idx) => idx + 65
@@ -18,6 +18,7 @@ export const ACTION_TYPES = {
     FORMULA_ADD: 'FORMULA_ADD',
     FORMULA_SUBTRACTION: 'FORMULA_SUBTRACTION',
     FORMULA_MULTIPLICATION: 'FORMULA_MULTIPLICATION',
+    SEARCH: 'SEARCH',
 };
 
 export const columnMenu = [
