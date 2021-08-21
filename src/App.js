@@ -32,9 +32,13 @@ const reducer = (state, action) => {
                 aValue = isNaN(aValue) ? aValue : parseFloat(aValue);
                 bValue = isNaN(bValue) ? bValue : parseFloat(bValue);
 
-                if (aValue === undefined || bValue === undefined) {
-                    return 0;
+                if (aValue === undefined) {
+                    return 1;
                 }
+                if (bValue === undefined) {
+                    return -1;
+                }
+
                 if (optionId === 'asc') {
                     return aValue === bValue ? 0 : aValue > bValue ? 1 : -1;
                 } else {
@@ -193,7 +197,7 @@ const App = () => {
         console.log('handleMouseDown called ', rowId, colId);
     };
 
-    const { colCount, matrix,selectedCell } = state;
+    const { colCount, matrix, selectedCell } = state;
     return (
         <>
             <SearchBox dispatch={dispatch} />
